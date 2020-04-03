@@ -22,7 +22,7 @@ for (let i = 0; i < 5; i++) {
 }
 ```
 
-### 方式三
+### 方式三 - Promise
 
 ```javascript
 function waitTime(i) {
