@@ -39,3 +39,23 @@ for (let i = 0; i < 5; i++) {
   })
 }
 ```
+
+### 方式四 - 异步方式 async、await & Promise
+
+```javascript
+const SLEEP_TIME = 1000
+
+function sleep(i) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(i)
+    }, SLEEP_TIME)
+  })
+}
+
+;(async function() {
+  for (let i = 0; i < 5; i++) {
+    console.log(await sleep(i))
+  }
+})()
+```
