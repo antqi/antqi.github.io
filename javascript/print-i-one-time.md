@@ -2,7 +2,7 @@
 
 ### 方式一
 
-```
+```javascript
 for (let i = 0; i < 5; i++) {
   ;(function(number) {
     setTimeout(function() {
@@ -10,5 +10,4 @@ for (let i = 0; i < 5; i++) {
     }, 1000 * number)
   })(i)
 }
-
 ```
