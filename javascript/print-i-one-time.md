@@ -21,3 +21,21 @@ for (let i = 0; i < 5; i++) {
   }, i * 1000)
 }
 ```
+
+### 方式三
+
+```javascript
+function waitTime(i) {
+  return new Promise(function(resolve, reject) {
+    setTimeout(function() {
+      resolve(i)
+    }, i * 1000)
+  })
+}
+
+for (let i = 0; i < 5; i++) {
+  waitTime(i).then(function(res) {
+    console.log(res)
+  })
+}
+```
