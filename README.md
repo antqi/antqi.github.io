@@ -1,5 +1,5 @@
 ## Welcome to antqi's GitHub Pages
 
-### 目录
+### JavaScript
 
-[editor on GitHub](https://github.com/antqi/antqi.github.io/edit/master/README.md)
+[隔一秒打印 i 值](https://github.com/antqi/antqi.github.io/edit/master/README.md)
