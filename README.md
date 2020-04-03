@@ -2,4 +2,4 @@
 
 ### JavaScript
 
-[隔一秒打印 i 值](https://github.com/antqi/antqi.github.io/edit/master/README.md)
+[隔一秒打印 i 值](https://antqi.github.io/javascript/print-i-one-time)
