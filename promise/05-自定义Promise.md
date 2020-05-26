@@ -79,27 +79,60 @@
 
 ``` javascript
 function Promise(excotor) {
-  let _self = this
-  // 状态常量
-  _self.STATUS = {
-    PENDING: 'pending',
-    RESOLVED: 'resolved',
-    REJECTED: 'rejected',
-  }
-  _self.status = _self.STATUS.PENDING // 初始化状态
-  _self.data // 当前状态下的data值
-  _self.callbacks = [] // 回调函数队列，每个元素的结构：{ onResolved(){}, onRejected(){} }
+    let _self = this
+    // 状态常量
+    _self.STATUS = {
+      PENDING: 'pending',
+      RESOLVED: 'resolved',
+      REJECTED: 'rejected',
+    }
+    _self.status = _self.STATUS.PENDING // 初始化状态
+    _self.data // 当前状态下的data值
+    _self.callbacks = [] // 回调函数队列，每个元素的结构：{ onResolved(){}, onRejected(){} }
 
-  function resolve(value) {}
+    function resolve(value) {
+      // 状态只能修改一次
+      if (_self.status === _self.STATUS.RESOLVED) {
+        return
+      }
+      _self.status = _self.STATUS.RESOLVED
+      _self.data = value
 
-  function reject(reason) {}
+      if (_self.status === _self.STATUS.RESOLVED) {
+        _self.callbacks.forEach(function (callback) {
+          // 异步执行成功的回调：onResolved
+          setTimeout(function () {
+            callback.onResolved(value)
+          })
+        })
+      }
+    }
 
-  try {
-    // excotor， 立即同步执行执行器函数
-    excotor(resolve, reject)
-  } catch (error) {
-    // 执行期函数抛出异常，则执行失败的回调函数
-    reject(error)
+    function reject(reason) {
+      // 状态只能修改一次
+      if (_self.status === _self.STATUS.REJECTED) {
+        return
+      }
+      _self.status = _self.STATUS.REJECTED
+      _self.data = reason
+
+      if (_self.status === _self.STATUS.REJECTED) {
+        _self.callbacks.forEach(function (callback) {
+          // 异步执行失败的回调：onRejected
+          setTimeout(function () {
+            callback.onRejected(reason)
+          })
+        })
+      }
+    }
+
+    try {
+      // excotor， 立即同步执行执行器函数
+      excotor(resolve, reject)
+    } catch (error) {
+      // 执行期函数抛出异常，则执行失败的回调函数
+      reject(error)
+    }
   }
 }
 ```
@@ -143,7 +176,7 @@ Promise.prototype.then = function (onResolved, onRejected) {
   // 返回一个新的Promise
   return new Promise((resolve, reject) => {
     function handler(callback) {
-      debugger
+     
       try {
         const result = callback(_self.data)
 
@@ -200,58 +233,104 @@ Promise.prototype.catch = function (onRejected) {
 #### resolved
 
 ``` javascript
-function resolve(value) {
-  // 状态只能改一次
-  if (_self.status !== _self.STATUS.PENDING) {
-    return
-  }
-
-  // 改状态为resolved
-  _self.status = _self.STATUS.RESOLVED
-  // 保存value数据
-  _self.data = value
-
-  // 如果有待执行的callback函数, 立即异步执行指定回调函数onResolved
-  if (_self.callbacks.length) {
-    setTimeout(() => {
-      // 放入队列执行所有成功的回调
-      _self.callbacks.forEach((callbacksObj) => {
-        callbacksObj.onResolved(value)
-      })
-    })
-  }
+/**
+   * @desc 静态方法resolve，理解为快捷指定成功回调函数的方法
+   * @param {any} value 指定任意返回的值
+   * @return  被解析过Promise对象
+   */
+Promise.resolve = function (value) {
+  return new Promise(function (resolve, reject) {
+    try {
+      if (value instanceof Promise) {
+        value.then(resolve, reject)
+      } else {
+        resolve(value)
+      }
+    } catch (error) {
+      reject(error)
+    }
+  })
 }
 ```
 
 #### rejected
 
 ``` javascript
-function reject(reason) {
-  // 状态只能改一次
-  if (_self.status !== _self.STATUS.PENDING) {
-    return
-  }
-
-  // 改状态为rejected
-  _self.status = _self.STATUS.REJECTED
-  // 保存value数据
-  _self.data = reason
-
-  // 如果有待执行的callback函数, 立即异步执行指定回调函数onRejected
-  if (_self.callbacks.length) {
-    setTimeout(() => {
-      // 放入队列执行所有失败的回调
-      _self.callbacks.forEach((callbacksObj) => {
-        callbacksObj.onRejected(reason)
-      })
-    })
-  }
+/**
+   * @desc 静态方法reject，理解为快捷指定失败回调函数的方法
+   * @param {any} reason 指定任意返回的值
+   * @return  带有特定被拒绝原因的Promise对象
+   */
+Promise.reject = function (reason) {
+  return new Promise(function (resolve, reject) {
+    reject(reason)
+  })
 }
 ```
 
 
 
 ## 5. Promise.all()/race()的实现
+
+#### all
+
+``` javascript
+/**
+   * @desc 启动多个异步任务并发运行 ，并组合返回的结果
+   * @param {Array｜String} promises 多个promise或值组成的数组
+   * @return 一个新的Promise，只有所有的Promise都成功才成功，只要有一个失败了就直接失败
+   */
+Promise.all = function (promises) {
+  let values = new Array(promises.length)
+  let count = 0
+  return new Promise(function (resolve, reject) {
+    promises.forEach(function (promise, index) {
+      Promise.resolve(promise).then(
+        function (value) {
+          count++
+          values[index] = value
+          if (count === promises.length) {
+            resolve(values)
+          }
+        },
+        function (reason) {
+          reject(reason)
+        }
+      )
+    })
+  })
+}
+```
+
+#### race
+
+``` javascript
+/**
+   * @desc 启动多个异步任务并发运行 ，第一个解决或拒绝的promise的结果状态组成的新的promise
+   * @param {Array｜String} promises 多个promise或值组成的数组
+   * @return 一个新的promise ，第一个解决或拒绝的promise的结果状态就是最终的结果状态
+   */
+Promise.race = function (promises) {
+  return new Promise(function (resolve, reject) {
+    promises.forEach(function (p) {
+      p.then(
+        function (value) {
+          resolve(value)
+        },
+        function (reason) {
+          reject(reason)
+        }
+      )
+    })
+  })
+}
+```
+
+
+
+
+
+
 
 
 
