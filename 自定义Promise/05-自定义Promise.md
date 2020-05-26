@@ -313,7 +313,7 @@ Promise.all = function (promises) {
 Promise.race = function (promises) {
   return new Promise(function (resolve, reject) {
     promises.forEach(function (p) {
-      p.then(
+      Promise.resolve(p).then(
         function (value) {
           resolve(value)
         },
@@ -328,13 +328,35 @@ Promise.race = function (promises) {
 
 
 
-
-
-
-
-
-
 ## 6. Promise.resolveDelay()/rejectedDelay()
+
+#### resolveDelay
+
+``` javascript
+Promise.resolveDelay = function (value, time) {
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      if (value instanceof Promise) {
+        value.then(resolve, reject)
+      } else {
+        resolve(value)
+      }
+    }, time)
+  })
+}
+```
+
+#### rejectedDelay
+
+``` javascript
+Promise.rejectDelay = function (reason, time) {
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      reject(reason)
+    }, time)
+  })
+}
+```
 
 
 
