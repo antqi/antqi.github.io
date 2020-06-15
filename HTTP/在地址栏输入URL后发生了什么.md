@@ -1,3 +1,10 @@
+## 输入地址栏之后
+
+- 域名解析，获取IP地址
+- 三次握手，建立TCP连接
+- HTTP请求，传输数据
+- 四次挥手，关闭TCP连接
+
 ## 域名解析，获取IP地址
 
 ``` mermaid
@@ -66,7 +73,7 @@ sequenceDiagram
 	
         Client->> + Server: FIN=0
 				Server->>  Client: ACK=Seq+1
-				Client->> - Server: Seq=ACK+1
+				Client->>  Server: Seq=ACK+1
 				Client->> - Server: Seq=ACK+1
 				
 ```

@@ -1,4 +1,4 @@
-## URI
+URI
 
 `Uniform Resource Identifier`/ 统一资源标志符
 
