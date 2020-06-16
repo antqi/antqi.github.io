@@ -226,3 +226,13 @@ If-None-Match: *
 #### If-Modified-Since & If-None-Match 
 
 **<u>当与If-Modified-Since一同使用的时候，If-None-Match 优先级更高</u>**
+
+
+
+#### 小总结：
+
+> no-cache 是开启缓存校验的钥匙
+
+设置了过期时间而没有设置no-cache ，在max-age 有效期内，浏览器不会发送该资源请求，直接获取本地缓存
+
+若设置了过期时间，且设置了no-cache ,会发送请求，并做缓存校验
