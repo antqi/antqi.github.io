@@ -2,7 +2,10 @@
 
 客户端发送HTTP请求到服务端响应成功，中间需要建立TCP连接，三次握手，再是通信数据，再是四次挥手结束响应。这个过程需要的多次的往返通信，拖延了浏览器处理数据的时间，增加了访问者和服务器的流量成本，请求或数据过多时也降低了浏览体验。
 
-而缓存直白一些说，可以节省用户的流量，减少服务器资源损耗。对用户对提供资源的服务器来说都是好事。
+而缓存直白一些说
+
+- 可以节省用户的流量
+- 减少服务器资源损耗
 
 那如何缓存呢？
 
@@ -23,7 +26,10 @@ Expires是HTTP1.0的时候存在的字段，Cache-Control 则是HTTP/1.1定义�
   - no-store & no-cache
 
   - public & private
+
   - max-age
+
+    
 
 ### Expires (HTTP/1.0 +)
 
@@ -65,7 +71,11 @@ Cache-Control提供了[多项属性值](https://developer.mozilla.org/zh-CN/docs
 
 ### public & private
 
-public
+public，响应可以被任何对象（发起请求的客户端，代理服务器等）缓存。即使是不可缓存的内容（没有设置max-age、expires等，或者是post请求）。
+
+private， 响应只能被单个用户缓存，不能作为共享缓存。私有缓存可以响应内容，比如用户发送请求的浏览器。
+
+
 
 ### no-store & no-cache
 
@@ -98,11 +108,17 @@ Cache-Control: no-cache
 - 响应头部`Last-Modified` & 请求头部 `If-Modified-Since`
 - 响应头部`Etag` & 请求头部`If-None-Match`
 
-### Last-Modified & If-Modified-Since|If-Unmodified-Since
+
+
+#### Last-Modified & If-Modified-Since|If-Unmodified-Since
+
+##### 如何起作用
 
 我们先看下组合 `Last-Modified & If-Modified-Since`。[If-Unmodified-Since](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/If-Unmodified-Since)与`If-Modified-Since`用法一样，意义相反，所以这里只说`If-Modified-Since`
 
 该组合验证请求资源是否编辑过，如果编辑过则响应304，未编辑则是200。
+
+##### If-Modified-Since是什么
 
 请求头部 [If-Modified-Since](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/If-Modified-Since)，资源最后一次修改时间。需要注意的是`If-Modified-Since`只可以用在 [`GET`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET) 或 [`HEAD`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/HEAD) 请求中
 
@@ -110,20 +126,103 @@ Cache-Control: no-cache
 If-Modified-Since: <day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT
 ```
 
+##### Last-Modified是什么
+
 响应头部[Last-Modified](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Last-Modified)，表示资源的最后一次修改时间
 
 ```http
 Last-Modified: <day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT
 ```
 
-第一次请求
-<img src="/Users/ant_qi/Library/Application Support/typora-user-images/image-20200612171150383.png" alt="image-20200612171150383" style="zoom:50%;" />
+**第一次请求响应**
 
-第二次请求
+Response
 
-![image-20200612170655335](/Users/ant_qi/Library/Application Support/typora-user-images/image-20200612170655335.png)
+``` http
+cache-control: max-age=3600
+content-type: image/webp
+date: Tue, 16 Jun 2020 02:38:20 GMT
+expires: Tue, 16 Jun 2020 03:38:20 GMT
+last-modified: Tue, 17 Mar 2020 17:03:38 GMT
+```
+
+**第二次请求响应**
+
+请求体中会带有`If-modified-since`  询问服务器该资源是否有编辑
+
+Request
+
+``` http
+if-modified-since:Tue, 17 Mar 2020 18:31:38 GMT
+```
+
+Response
+
+```http
+Status Code: 304 Not Modified
+...
+last-modified: Tue, 17 Mar 2020 17:03:38 GMT 
+```
+
+Last-Modified & If-Modified-Since询问的是资源有没有编辑，如果文件直至打开，键入几个字再删除这几个字，再保存呢，这也是编辑了，但其实内容是无变化的。问题：
+
+<u>如何知道服务器文件内容没有改动？</u>
 
 #### Etag & If-None-Match
 
+##### Etag是什么？
 
+Etag是HTTP响应头的资源的特定版本的标识符。当设置了该头部：
 
+- 如果内容没有改变，Web服务器不需要发送完整的内容
+- 如果内容有修改，Etag则会更新，可以理解为文件的MD5值
+
+##### Etag语法
+
+```
+ETag: W/"<etag_value>"
+ETag: "<etag_value>"
+```
+
+- W/  
+
+  可选表示大小写敏感
+
+- <etag_value> 
+
+  没有明确指定生成ETag值的方法，可HASH，可MD5 ，可自定义的版本
+
+Etag只是规定了响应的内容唯一标识，而需要真正起到作用，还需要与请求头部 `If-None-Match`配合使用
+
+##### If-None-Match是什么
+
+If-None-Match是一个条件式请求头部。
+
+- 对于 GET[`GET`](https://wiki.developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET) 和 [`HEAD`](https://wiki.developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/HEAD) 请求方法：
+  - 当服务器没有任何的资源Etag与请求头Etag值相同时候，返回所请求的资源，状态码为200
+  - 而验证失败时，服务器返回304 Not Modified状态码，并且同时生成对应的200 响应中的首部：Cache-Control、Content-Location、Date、ETag、Expires 和 Vary 。
+- 对于其他方法：
+  - 当服务器没有任何资源的Etag属性值与请求的Etag属性值相匹配时，才会对请求做出相应处理。
+  - 验证失败时，响应状态码` 412 Precondition Failed`（先决条件失败）表示客户端错误
+
+##### If-None-Match语法
+
+```
+If-None-Match: <etag_value>
+If-None-Match: <etag_value>, <etag_value>, …
+If-None-Match: *
+```
+
+- <etag_value>
+
+  形式是采用双引号括起来的由 ASCII 字符串（如"675af34563dc-tr34"）
+
+- *
+
+  可以代表任意资源，只在用在资源上传时，一般用PUT方法，来·检测拥有相同识别ID的资源是否已经上传过了
+
+  
+
+#### If-Modified-Since & If-None-Match 
+
+**<u>当与If-Modified-Since一同使用的时候，If-None-Match 优先级更高</u>**
