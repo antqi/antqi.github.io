@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html  lang="zh-CN" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>自定义Promise/05-自定义Promise | Hexo</title>
+    <meta name="description" content="实现步骤：DEMO  定义整个结构 Promise构造函数的实现 Promise.then()&#x2F;catch()的实现 Promise.resolve()&#x2F;reject()的实现 Promise.all()&#x2F;race()的实现 Promise.resolveDelay()&#x2F;rejectDelay()的实现  1. 定义整体结构code 12345678910111213141516171819202">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义Promise&#x2F;05-自定义Promise">
+<meta property="og:url" content="http://antqi.github.io/2020/05/18/%E8%87%AA%E5%AE%9A%E4%B9%89Promise/05-%E8%87%AA%E5%AE%9A%E4%B9%89Promise/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="实现步骤：DEMO  定义整个结构 Promise构造函数的实现 Promise.then()&#x2F;catch()的实现 Promise.resolve()&#x2F;reject()的实现 Promise.all()&#x2F;race()的实现 Promise.resolveDelay()&#x2F;rejectDelay()的实现  1. 定义整体结构code 12345678910111213141516171819202">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-18T02:44:03.010Z">
+<meta property="article:modified_time" content="2020-05-26T09:04:19.382Z">
+<meta property="article:author" content="antqi">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/antqi" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/05b7a92d63c04736294e08d64021c356?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">antqi</h2>
+            <h3 id="title" class="hidden xl:block">Student &amp; Coder</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                BeiJing, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="搜索" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="搜索" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">首页</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">归档</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">分类</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">标签</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">项目</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">友链</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">关于</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a href="https://github.com/antqi" target="_blank" rel="noopener">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-12 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            自定义Promise/05-自定义Promise
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2020/05/18/%E8%87%AA%E5%AE%9A%E4%B9%89Promise/05-%E8%87%AA%E5%AE%9A%E4%B9%89Promise/" class="article-date">
+	  <time datetime="2020-05-18T02:44:03.010Z" itemprop="datePublished">5月 18</time>
+	</a>
+</span>
+
+                
+
+                
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2020/05/18/%E8%87%AA%E5%AE%9A%E4%B9%89Promise/05-%E8%87%AA%E5%AE%9A%E4%B9%89Promise/#comments" class="article-comment-link">
+                        评论
+                    </a>
+                </span>
+                
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h2 id="实现步骤："><a href="#实现步骤：" class="headerlink" title="实现步骤："></a>实现步骤：</h2><p><a href="https://github.com/antqi/test/blob/master/promise/lib/promise.js" target="_blank" rel="noopener">DEMO</a></p>
+<ol>
+<li>定义整个结构</li>
+<li>Promise构造函数的实现</li>
+<li>Promise.then()/catch()的实现</li>
+<li>Promise.resolve()/reject()的实现</li>
+<li>Promise.all()/race()的实现</li>
+<li>Promise.resolveDelay()/rejectDelay()的实现</li>
+</ol>
+<h2 id="1-定义整体结构"><a href="#1-定义整体结构" class="headerlink" title="1. 定义整体结构"></a>1. 定义整体结构</h2><p><a href="https://github.com/antqi/test/blob/42bdff676a9adb85e96aaa111ba339a6c6aa262f/promise/lib/promise.js" target="_blank" rel="noopener">code</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">;(<span class="function"><span class="keyword">function</span> (<span class="params">param</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">Promise</span>(<span class="params">excotor</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">resolve</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">reject</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">    <span class="comment">// excotor，执行器函数</span></span><br><span class="line">    excotor(resolve, reject)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@desc </span>指定成功与失败的回调函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>onResolved 成功的回调函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>onRejected 失败的回调函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return </span>Promise对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="built_in">Promise</span>.prototype.then = <span class="function"><span class="keyword">function</span> (<span class="params">onResolved, onRejected</span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@desc </span>指定失败的回调函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>onRejected 失败的回调函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return </span>Promise对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="built_in">Promise</span>.prototype.catch = <span class="function"><span class="keyword">function</span> (<span class="params">onRejected</span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@desc </span>静态方法resolve，理解为快捷指定成功回调函数的方法</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;any&#125;</span> </span>value 指定任意返回的值</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return  </span>被解析过Promise对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="built_in">Promise</span>.resolve = <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@desc </span>静态方法reject，理解为快捷指定失败回调函数的方法</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;any&#125;</span> </span>reason 指定任意返回的值</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return  </span>带有特定被拒绝原因的Promise对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="built_in">Promise</span>.resolve = <span class="function"><span class="keyword">function</span> (<span class="params">reason</span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@desc </span>启动多个异步任务并发运行 ，并组合返回的结果</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Array｜String&#125;</span> </span>promises 多个promise或值组成的数组</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return </span>一个新的Promise，只有所有的Promise都成功才成功，只要有一个失败了就直接失败</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="built_in">Promise</span>.all = <span class="function"><span class="keyword">function</span> (<span class="params">promises</span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@desc </span>启动多个异步任务并发运行 ，第一个解决或拒绝的promise的结果状态组成的新的promise</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Array｜String&#125;</span> </span>promises 多个promise或值组成的数组</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return </span>一个新的promise ，第一个解决或拒绝的promise的结果状态就是最终的结果状态</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="built_in">Promise</span>.race = <span class="function"><span class="keyword">function</span> (<span class="params">promises</span>) </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 向外暴露</span></span><br><span class="line">  param.Promise = <span class="built_in">Promise</span></span><br><span class="line">&#125;)(<span class="built_in">window</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-Promise的构造函数的实现"><a href="#2-Promise的构造函数的实现" class="headerlink" title="2. Promise的构造函数的实现"></a>2. Promise的构造函数的实现</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Promise</span>(<span class="params">excotor</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> _self = <span class="keyword">this</span></span><br><span class="line">    <span class="comment">// 状态常量</span></span><br><span class="line">    _self.STATUS = &#123;</span><br><span class="line">      PENDING: <span class="string">'pending'</span>,</span><br><span class="line">      RESOLVED: <span class="string">'resolved'</span>,</span><br><span class="line">      REJECTED: <span class="string">'rejected'</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    _self.status = _self.STATUS.PENDING <span class="comment">// 初始化状态</span></span><br><span class="line">    _self.data <span class="comment">// 当前状态下的data值</span></span><br><span class="line">    _self.callbacks = [] <span class="comment">// 回调函数队列，每个元素的结构：&#123; onResolved()&#123;&#125;, onRejected()&#123;&#125; &#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">resolve</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">      <span class="comment">// 状态只能修改一次</span></span><br><span class="line">      <span class="keyword">if</span> (_self.status === _self.STATUS.RESOLVED) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      _self.status = _self.STATUS.RESOLVED</span><br><span class="line">      _self.data = value</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (_self.status === _self.STATUS.RESOLVED) &#123;</span><br><span class="line">        _self.callbacks.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">callback</span>) </span>&#123;</span><br><span class="line">          <span class="comment">// 异步执行成功的回调：onResolved</span></span><br><span class="line">          setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            callback.onResolved(value)</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">reject</span>(<span class="params">reason</span>) </span>&#123;</span><br><span class="line">      <span class="comment">// 状态只能修改一次</span></span><br><span class="line">      <span class="keyword">if</span> (_self.status === _self.STATUS.REJECTED) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      _self.status = _self.STATUS.REJECTED</span><br><span class="line">      _self.data = reason</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (_self.status === _self.STATUS.REJECTED) &#123;</span><br><span class="line">        _self.callbacks.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">callback</span>) </span>&#123;</span><br><span class="line">          <span class="comment">// 异步执行失败的回调：onRejected</span></span><br><span class="line">          setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            callback.onRejected(reason)</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="comment">// excotor， 立即同步执行执行器函数</span></span><br><span class="line">      excotor(resolve, reject)</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">      <span class="comment">// 执行期函数抛出异常，则执行失败的回调函数</span></span><br><span class="line">      reject(error)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="3-Promise-then-catch-的实现"><a href="#3-Promise-then-catch-的实现" class="headerlink" title="3. Promise.then()/catch()的实现"></a>3. Promise.then()/catch()的实现</h2><h4 id="then"><a href="#then" class="headerlink" title="then"></a>then</h4><ul>
+<li>先指定回调函数，后改变状态</li>
+<li>先改变状态，后指定回调函数</li>
+<li>返回一个新的promise，新的promise值有三种情况</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@desc </span>指定成功与失败的回调函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>onResolved 成功的回调函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>onRejected 失败的回调函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return </span>Promise对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="built_in">Promise</span>.prototype.then = <span class="function"><span class="keyword">function</span> (<span class="params">onResolved, onRejected</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _self = <span class="keyword">this</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 没有指定回调函数的时候</span></span><br><span class="line">  onResolved =</span><br><span class="line">    <span class="keyword">typeof</span> onResolved === <span class="string">'function'</span></span><br><span class="line">    ? onResolved</span><br><span class="line">  : <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> value</span><br><span class="line">  &#125;</span><br><span class="line">  onRejected =</span><br><span class="line">    <span class="keyword">typeof</span> onRejected === <span class="string">'function'</span></span><br><span class="line">    ? onRejected</span><br><span class="line">  : <span class="function"><span class="keyword">function</span> (<span class="params">reason</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> reason</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 返回一个新的Promise</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">handler</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">     </span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> result = callback(_self.data)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (result <span class="keyword">instanceof</span> <span class="built_in">Promise</span>) &#123;</span><br><span class="line">          <span class="comment">// result是一个Promise</span></span><br><span class="line">          result.then(resolve, reject)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">// result是普通值</span></span><br><span class="line">          resolve(result)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        <span class="comment">// onRejected抛出异常，则新的promise结果为error</span></span><br><span class="line">        reject(error)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (_self.status === _self.STATUS.RESOLVED) &#123;</span><br><span class="line">      <span class="comment">// 当前状态是resolved，立即异步执行成功的回调函数</span></span><br><span class="line">      setTimeout(handler(onResolved))</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (_self.status === _self.STATUS.REJECTED) &#123;</span><br><span class="line">      <span class="comment">// 当前状态是rejeted，立即异步执行失败的回调函数</span></span><br><span class="line">      setTimeout(handler(onRejected))</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 当天状态是pending，将指定的回调函数存储到callbacks</span></span><br><span class="line">      _self.callbacks.push(&#123;</span><br><span class="line">        onResolved: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">          handler(onResolved)</span><br><span class="line">        &#125;,</span><br><span class="line">        onRejected: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">          handler(onRejected)</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="catch"><a href="#catch" class="headerlink" title="catch"></a>catch</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@desc </span>指定失败的回调函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Function&#125;</span> </span>onRejected 失败的回调函数</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return </span>Promise对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="built_in">Promise</span>.prototype.catch = <span class="function"><span class="keyword">function</span> (<span class="params">onRejected</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.then(<span class="literal">undefined</span>, onRejected)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-Promise-resolve-reject-的实现"><a href="#4-Promise-resolve-reject-的实现" class="headerlink" title="4. Promise.resolve()/reject()的实现"></a>4. Promise.resolve()/reject()的实现</h2><h4 id="resolved"><a href="#resolved" class="headerlink" title="resolved"></a>resolved</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@desc </span>静态方法resolve，理解为快捷指定成功回调函数的方法</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;any&#125;</span> </span>value 指定任意返回的值</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return  </span>被解析过Promise对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="built_in">Promise</span>.resolve = <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (value <span class="keyword">instanceof</span> <span class="built_in">Promise</span>) &#123;</span><br><span class="line">        value.then(resolve, reject)</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        resolve(value)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">      reject(error)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="rejected"><a href="#rejected" class="headerlink" title="rejected"></a>rejected</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@desc </span>静态方法reject，理解为快捷指定失败回调函数的方法</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;any&#125;</span> </span>reason 指定任意返回的值</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return  </span>带有特定被拒绝原因的Promise对象</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="built_in">Promise</span>.reject = <span class="function"><span class="keyword">function</span> (<span class="params">reason</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    reject(reason)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-Promise-all-race-的实现"><a href="#5-Promise-all-race-的实现" class="headerlink" title="5. Promise.all()/race()的实现"></a>5. Promise.all()/race()的实现</h2><h4 id="all"><a href="#all" class="headerlink" title="all"></a>all</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@desc </span>启动多个异步任务并发运行 ，并组合返回的结果</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Array｜String&#125;</span> </span>promises 多个promise或值组成的数组</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return </span>一个新的Promise，只有所有的Promise都成功才成功，只要有一个失败了就直接失败</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="built_in">Promise</span>.all = <span class="function"><span class="keyword">function</span> (<span class="params">promises</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> values = <span class="keyword">new</span> <span class="built_in">Array</span>(promises.length)</span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    promises.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">promise, index</span>) </span>&#123;</span><br><span class="line">      <span class="built_in">Promise</span>.resolve(promise).then(</span><br><span class="line">        <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">          count++</span><br><span class="line">          values[index] = value</span><br><span class="line">          <span class="keyword">if</span> (count === promises.length) &#123;</span><br><span class="line">            resolve(values)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="function"><span class="keyword">function</span> (<span class="params">reason</span>) </span>&#123;</span><br><span class="line">          reject(reason)</span><br><span class="line">        &#125;</span><br><span class="line">      )</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="race"><a href="#race" class="headerlink" title="race"></a>race</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@desc </span>启动多个异步任务并发运行 ，第一个解决或拒绝的promise的结果状态组成的新的promise</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Array｜String&#125;</span> </span>promises 多个promise或值组成的数组</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return </span>一个新的promise ，第一个解决或拒绝的promise的结果状态就是最终的结果状态</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="built_in">Promise</span>.race = <span class="function"><span class="keyword">function</span> (<span class="params">promises</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    promises.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">p</span>) </span>&#123;</span><br><span class="line">      <span class="built_in">Promise</span>.resolve(p).then(</span><br><span class="line">        <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">          resolve(value)</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="function"><span class="keyword">function</span> (<span class="params">reason</span>) </span>&#123;</span><br><span class="line">          reject(reason)</span><br><span class="line">        &#125;</span><br><span class="line">      )</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="6-Promise-resolveDelay-rejectedDelay"><a href="#6-Promise-resolveDelay-rejectedDelay" class="headerlink" title="6. Promise.resolveDelay()/rejectedDelay()"></a>6. Promise.resolveDelay()/rejectedDelay()</h2><h4 id="resolveDelay"><a href="#resolveDelay" class="headerlink" title="resolveDelay"></a>resolveDelay</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.resolveDelay = <span class="function"><span class="keyword">function</span> (<span class="params">value, time</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (value <span class="keyword">instanceof</span> <span class="built_in">Promise</span>) &#123;</span><br><span class="line">        value.then(resolve, reject)</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        resolve(value)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, time)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="rejectedDelay"><a href="#rejectedDelay" class="headerlink" title="rejectedDelay"></a>rejectedDelay</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.rejectDelay = <span class="function"><span class="keyword">function</span> (<span class="params">reason, time</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      reject(reason)</span><br><span class="line">    &#125;, time)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="7-ES5-function-完整版本"><a href="#7-ES5-function-完整版本" class="headerlink" title="7. ES5 function 完整版本"></a>7. ES5 function 完整版本</h2><h2 id="8-ES6-class完整版"><a href="#8-ES6-class完整版" class="headerlink" title="8. ES6 class完整版"></a>8. ES6 class完整版</h2>
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>本文链接 : </strong><a class="permalink" href="http://antqi.github.io/2020/05/18/%E8%87%AA%E5%AE%9A%E4%B9%89Promise/05-%E8%87%AA%E5%AE%9A%E4%B9%89Promise/">http://antqi.github.io/2020/05/18/自定义Promise/05-自定义Promise/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">文章目录</h3>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#实现步骤："><span class="toc-number">1.</span> <span class="toc-text">实现步骤：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-定义整体结构"><span class="toc-number">2.</span> <span class="toc-text">1. 定义整体结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Promise的构造函数的实现"><span class="toc-number">3.</span> <span class="toc-text">2. Promise的构造函数的实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Promise-then-catch-的实现"><span class="toc-number">4.</span> <span class="toc-text">3. Promise.then()&#x2F;catch()的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#then"><span class="toc-number">4.0.1.</span> <span class="toc-text">then</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#catch"><span class="toc-number">4.0.2.</span> <span class="toc-text">catch</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Promise-resolve-reject-的实现"><span class="toc-number">5.</span> <span class="toc-text">4. Promise.resolve()&#x2F;reject()的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#resolved"><span class="toc-number">5.0.1.</span> <span class="toc-text">resolved</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rejected"><span class="toc-number">5.0.2.</span> <span class="toc-text">rejected</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Promise-all-race-的实现"><span class="toc-number">6.</span> <span class="toc-text">5. Promise.all()&#x2F;race()的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#all"><span class="toc-number">6.0.1.</span> <span class="toc-text">all</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#race"><span class="toc-number">6.0.2.</span> <span class="toc-text">race</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Promise-resolveDelay-rejectedDelay"><span class="toc-number">7.</span> <span class="toc-text">6. Promise.resolveDelay()&#x2F;rejectedDelay()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#resolveDelay"><span class="toc-number">7.0.1.</span> <span class="toc-text">resolveDelay</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rejectedDelay"><span class="toc-number">7.0.2.</span> <span class="toc-text">rejectedDelay</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-ES5-function-完整版本"><span class="toc-number">8.</span> <span class="toc-text">7. ES5 function 完整版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-ES6-class完整版"><span class="toc-number">9.</span> <span class="toc-text">8. ES6 class完整版</span></a></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a href="https://github.com/antqi" target="_blank" rel="noopener">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/yox@1.0.0-alpha.121/dist/standard/prod/yox.min.js"></script>
+
+
+<script src="/js/search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+    </body>
+</html>

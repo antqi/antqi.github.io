@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html  lang="zh-CN" >
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <title>JavaScript模块化/2 模块化的规范 | Hexo</title>
+    <meta name="description" content="引言 模块虽然解偶了代码，使得代码易于维护等等好处。但一个项目往往中有若干个以上的模块，模块多以及模块间的依赖导致了HTTP请求响应次数过多以及依赖模糊问题，直接导致项目难以维护，而引发了模块的管理问题。  这时候出现模块化规范，则是解决模块化带来的问题。模块化规范的常用几种：  CommonJS AMD CMD ES6  规范简介CommonJS历史由来wiki CommonJS是一个项目，创建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript模块化&#x2F;2 模块化的规范">
+<meta property="og:url" content="http://antqi.github.io/2020/06/18/JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96/2%20%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9A%84%E8%A7%84%E8%8C%83/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="引言 模块虽然解偶了代码，使得代码易于维护等等好处。但一个项目往往中有若干个以上的模块，模块多以及模块间的依赖导致了HTTP请求响应次数过多以及依赖模糊问题，直接导致项目难以维护，而引发了模块的管理问题。  这时候出现模块化规范，则是解决模块化带来的问题。模块化规范的常用几种：  CommonJS AMD CMD ES6  规范简介CommonJS历史由来wiki CommonJS是一个项目，创建">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-18T07:28:40.331Z">
+<meta property="article:modified_time" content="2020-06-23T10:40:35.545Z">
+<meta property="article:author" content="antqi">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+    
+<link rel="stylesheet" href="/css/common.min.css">
+
+
+
+    
+    
+    
+    
+        <link href="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/css/lightgallery.min.css" rel="stylesheet">
+    
+    
+    
+<link rel="stylesheet" href="/css/iconfont.min.css">
+
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+    <body>
+        <header class="header header-fixture">
+    <div class="profile-search-wrap flex sm:block">
+        
+        
+        <div class="profile sm:text-center md:px-1 lg:px-3 sm:pb-4 sm:pt-6">
+            <a id="avatar" role="link" href="https://github.com/antqi" class="inline-block lg:w-16 lg:h-16 w-8 h-8 m-2" target="_blank" rel="noopener" rel="noreferrer" >
+                <img src="https://www.gravatar.com/avatar/05b7a92d63c04736294e08d64021c356?s=128" class="rounded-full" alt="avatar">
+            </a>
+            <h2 id="name" class="hidden lg:block">antqi</h2>
+            <h3 id="title" class="hidden xl:block">Student &amp; Coder</h3>
+            
+            <small id="location" class="hidden lg:block">
+                <i class="iconfont icon-map-icon"></i>
+                BeiJing, China
+            </small>
+            
+        </div>
+        
+        
+<div class="search flex-1 flex lg:inline-block sm:hidden lg:px-4 lg:mt-2 lg:mb-4 lg:w-full">
+    <form id="search-form" class="my-auto flex-1 lg:border lg:border-solid lg:border-gray-200">
+        <div class="input-group table bg-gray-100 lg:bg-white w-full">
+            <input id="search-input" type="text" placeholder="搜索" class="inline-block w-full bg-gray-100 lg:bg-white">
+            <span class="table-cell">
+                <button name="search tigger button" disabled>
+                    <i class="iconfont icon-search m-2"></i>
+                </button>
+            </span>
+        </div>
+    </form>
+        
+<script id="search-teamplate" type="text/html" data-path="/content.json">
+    <div>
+        <div class="search-header bg-gray-400">
+            <input id="actual-search-input" model="keyword" ref="input" class="inline-block w-full h-10 px-2 py-1" placeholder="搜索" type="text">
+        </div>
+        <div class="search-result bg-gray-200">
+            {{#each searchPosts}}
+            <a href="/{{ path }}" class="result-item block px-2 pb-3 mb-1 pt-1 hover:bg-indigo-100">
+                <i class="iconfont icon-file"></i>
+                <h1 class="result-title inline font-medium text-lg">{{ title }}</h1>
+                <p class="result-content text-gray-600 text-sm">{{{ text }}}</p>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+</script>
+
+</div>
+
+
+        <button name="menu toogle button" id="menu-toggle-btn" class="block sm:hidden p-3" role="button" aria-expanded="false">
+            <i class="iconfont icon-hamburger"></i>
+        </button>
+    </div>
+    <nav id="menu-nav" class="hidden sm:flex flex-col">
+        
+        
+            <div class="menu-item menu-home" role="menuitem">
+                <a href="/.">
+                    <i class="iconfont icon-home" aria-hidden="true"></i>
+                    <span class="menu-title">首页</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-archives" role="menuitem">
+                <a href="/archives">
+                    <i class="iconfont icon-archive" aria-hidden="true"></i>
+                    <span class="menu-title">归档</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-categories" role="menuitem">
+                <a href="/categories">
+                    <i class="iconfont icon-folder" aria-hidden="true"></i>
+                    <span class="menu-title">分类</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-tags" role="menuitem">
+                <a href="/tags">
+                    <i class="iconfont icon-tag" aria-hidden="true"></i>
+                    <span class="menu-title">标签</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-repository" role="menuitem">
+                <a href="/repository">
+                    <i class="iconfont icon-project" aria-hidden="true"></i>
+                    <span class="menu-title">项目</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-links" role="menuitem">
+                <a href="/links">
+                    <i class="iconfont icon-friend" aria-hidden="true"></i>
+                    <span class="menu-title">友链</span>
+                </a>
+            </div>
+        
+        
+            <div class="menu-item menu-about" role="menuitem">
+                <a href="/about">
+                    <i class="iconfont icon-cup" aria-hidden="true"></i>
+                    <span class="menu-title">关于</span>
+                </a>
+            </div>
+        
+        
+<div class="social-links flex sm:flex-col lg:hidden mt-5">
+    
+        <span class="social-item text-center">
+            <a href="https://github.com/antqi" target="_blank" rel="noopener">
+                <i class="iconfont social-icon icon-github"></i>
+                <span class="menu-title hidden lg:inline">menu.github</span>
+            </a>
+        </span>
+    
+</div>
+
+
+    </nav>
+</header>
+
+        <section class="main-section">
+            
+    <main class="flex-1 px-4 py-12 md:px-5 lg:px-8 lg:py-4 relative min-h-screen">
+    
+
+    <article class="content article article-archives article-type-list" itemscope="">
+        <header class="article-header">
+            
+    
+        <h1 class="article-title text-lg" itemprop="name">
+            JavaScript模块化/2 模块化的规范
+        </h1>
+    
+
+
+
+            <p class="article-meta mb-3 text-xs">
+                <span class="article-date">
+    <i class="iconfont icon-calendar-check"></i>
+	<a href="/2020/06/18/JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96/2%20%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9A%84%E8%A7%84%E8%8C%83/" class="article-date">
+	  <time datetime="2020-06-18T07:28:40.331Z" itemprop="datePublished">6月 18</time>
+	</a>
+</span>
+
+                
+
+                
+
+                <span class="_partial/post-comment"><i class="icon icon-comment"></i>
+                    <a href="/2020/06/18/JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96/2%20%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9A%84%E8%A7%84%E8%8C%83/#comments" class="article-comment-link">
+                        评论
+                    </a>
+                </span>
+                
+
+            </p>
+        </header>
+        <div class="marked-body article-body">
+            <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><blockquote>
+<p>模块虽然解偶了代码，使得代码易于维护等等好处。但一个项目往往中有若干个以上的模块，模块多以及模块间的依赖导致了<u>HTTP请求响应次数过多</u>以及<u>依赖模糊</u>问题，直接导致项目<u>难以维护</u>，而引发了模块的管理问题。</p>
+</blockquote>
+<p>这时候出现<strong>模块化规范</strong>，则是解决模块化带来的问题。模块化规范的常用几种：</p>
+<ul>
+<li><strong>CommonJS</strong></li>
+<li><strong>AMD</strong></li>
+<li><strong>CMD</strong></li>
+<li><strong>ES6</strong></li>
+</ul>
+<h2 id="规范简介"><a href="#规范简介" class="headerlink" title="规范简介"></a>规范简介</h2><h3 id="CommonJS"><a href="#CommonJS" class="headerlink" title="CommonJS"></a><a href="http://wiki.commonjs.org/wiki/CommonJS" target="_blank" rel="noopener">CommonJS</a></h3><h4 id="历史由来wiki"><a href="#历史由来wiki" class="headerlink" title="历史由来wiki"></a>历史由来<a href="https://zh.wikipedia.org/wiki/CommonJS" target="_blank" rel="noopener">wiki</a></h4><blockquote>
+<p>CommonJS是一个项目，创建的主要原因是当时缺乏普遍可接受形式的JavaScript脚本模块单元，模块在与运行JavaScript脚本的常规网页浏览器所提供的不同的环境下可以重复使用</p>
+</blockquote>
+<p>2009年1月由<a href="https://zh.wikipedia.org/wiki/Mozilla" target="_blank" rel="noopener">Mozilla</a>工程师Kevin Dangoor发起，起初命名“ServerJS”。在2009年8月，这个项目被改为“CommonJS”来展示其<a href="https://zh.wikipedia.org/wiki/API" target="_blank" rel="noopener">API</a>的广泛的应用性。</p>
+<p>2013年5月，<a href="https://zh.wikipedia.org/wiki/Node.js" target="_blank" rel="noopener">Node.js</a>包管理器<a href="https://zh.wikipedia.org/wiki/Npm" target="_blank" rel="noopener">npm</a>的作者Isaac Z. Schlueter，宣布Node.js已经废弃了CommonJS。后续，NodeJS在计划使用 <a href="https://nodejs.org/api/esm.html#esm_ecmascript_modules" target="_blank" rel="noopener">ES6模块系统</a></p>
+<p>JavaScript一一直没有模块化的概念，直到2009年Node.js的出现，模块化成了必要实现。因此Node.js首先在服务端实现了CommonJS规范的模块系统。</p>
+<p>而后<a href="https://github.com/browserify" target="_blank" rel="noopener">Browserify</a>实现了浏览器端的CommonJS规范，自此之后，使得浏览器端的代码能以以模块化方式运行，并能使用npm上传、维护以及使用JavaScript模块。</p>
+<h4 id="CommonJS约定简述Modules-1-1-1"><a href="#CommonJS约定简述Modules-1-1-1" class="headerlink" title="CommonJS约定简述Modules/1.1.1"></a>CommonJS约定简述<a href="http://wiki.commonjs.org/wiki/Modules/1.1.1" target="_blank" rel="noopener">Modules/1.1.1</a></h4><h5 id="首先简述CommonJS中的模块是什么？"><a href="#首先简述CommonJS中的模块是什么？" class="headerlink" title="首先简述CommonJS中的模块是什么？"></a>首先简述CommonJS中的模块是什么？</h5><p>每个文件都是一个模块，有自己的作用域。</p>
+<p>每个文件里面变量、函数等等都是私有的 ，提供导出功能来选择开发哪些变量、函数等等，并可依赖其他模块。</p>
+<h5 id="CommonJS规范约定模块的实现"><a href="#CommonJS规范约定模块的实现" class="headerlink" title="CommonJS规范约定模块的实现"></a>CommonJS规范约定模块的实现</h5><h6 id="Module-每个文件可以看成一个Module"><a href="#Module-每个文件可以看成一个Module" class="headerlink" title="Module(每个文件可以看成一个Module)"></a>Module(每个文件可以看成一个Module)</h6><p>Module是一个对象，</p>
+<ul>
+<li><p>包含属性id：唯一的标识符；</p>
+</li>
+<li><p>可能具备包含属性uri，都是用来标识module的唯一性。</p>
+</li>
+<li><p>Module包含自由变量<code>require</code></p>
+</li>
+<li><p>Module包含自由变量<code>exports</code>，<code>exports</code>作为唯一的导出方法，<code>exports</code>可以在执行时向其添加API的对象。</p>
+</li>
+</ul>
+<h6 id="Require"><a href="#Require" class="headerlink" title="Require"></a>Require</h6><p>用来加载需要的模块</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="built_in">module</span>.id/uri)</span><br></pre></td></tr></table></figure>
+
+<p>Require是一个函数，接受模块标识符/路径（<code>module.id</code>/<code>uri</code>），返回外部模块导出API。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>) <span class="comment">// 标识符，一般是引用第三方模块</span></span><br><span class="line"><span class="keyword">var</span> myCalc = <span class="built_in">require</span>(<span class="string">'./tool/calc'</span>) <span class="comment">// 路径，一般为项目自定义模块时</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> result = myCalc.add(<span class="number">2</span>,<span class="number">3</span>) <span class="comment">// 使用模块开放的方法</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="exports"><a href="#exports" class="headerlink" title="exports"></a>exports</h6><p>也就是向外暴露模块。</p>
+<p>作为唯一的导出方法,可以在执行时向其添加API的对象。</p>
+<p>语法上有两种方式：</p>
+<ul>
+<li><code>module.exports = 任意类型</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="comment">// 方法体</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = foo</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>exports.xxx = 任意类型</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> name=<span class="string">"john"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> nums=[<span class="number">1</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">5</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">showName</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">exports.name=name</span><br><span class="line">exports.nums=nums</span><br><span class="line">exports.showName=showName</span><br></pre></td></tr></table></figure>
+
+<h4 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h4><p>有一点很重要，CommonJS模块是同步加载的</p>
+<ul>
+<li>服务器端，NodeJS是CommonJS规范的实现</li>
+<li>浏览器端，Browserify是CommonJS规范的实现</li>
+</ul>
+<h3 id="AMD"><a href="#AMD" class="headerlink" title="AMD"></a>AMD</h3><p>AMD是“Asynchronous Module Definition”，翻译过来是异步模块定义。</p>
+<h3 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h3><h3 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h3>
+        </div>
+        
+<blockquote class="copyright">
+    <p><strong>本文链接 : </strong><a class="permalink" href="http://antqi.github.io/2020/06/18/JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96/2%20%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9A%84%E8%A7%84%E8%8C%83/">http://antqi.github.io/2020/06/18/JavaScript模块化/2 模块化的规范/</a></p>
+    <p><strong>This article is available under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> License</strong></p>
+</blockquote>
+
+
+    </article>
+    
+    <section id="comments">
+        
+    </section>
+
+
+    
+
+</main>
+
+
+<aside style="" id="sidebar" class="aside aside-fixture">
+    <div class="toc-sidebar">
+        <nav id="toc" class="article-toc">
+            <h3 class="toc-title">文章目录</h3>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#规范简介"><span class="toc-number">2.</span> <span class="toc-text">规范简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CommonJS"><span class="toc-number">2.1.</span> <span class="toc-text">CommonJS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#历史由来wiki"><span class="toc-number">2.1.1.</span> <span class="toc-text">历史由来wiki</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CommonJS约定简述Modules-1-1-1"><span class="toc-number">2.1.2.</span> <span class="toc-text">CommonJS约定简述Modules&#x2F;1.1.1</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#首先简述CommonJS中的模块是什么？"><span class="toc-number">2.1.2.1.</span> <span class="toc-text">首先简述CommonJS中的模块是什么？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#CommonJS规范约定模块的实现"><span class="toc-number">2.1.2.2.</span> <span class="toc-text">CommonJS规范约定模块的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Module-每个文件可以看成一个Module"><span class="toc-number">2.1.2.2.1.</span> <span class="toc-text">Module(每个文件可以看成一个Module)</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Require"><span class="toc-number">2.1.2.2.2.</span> <span class="toc-text">Require</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#exports"><span class="toc-number">2.1.2.2.3.</span> <span class="toc-text">exports</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#具体实现"><span class="toc-number">2.1.3.</span> <span class="toc-text">具体实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AMD"><span class="toc-number">2.2.</span> <span class="toc-text">AMD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMD"><span class="toc-number">2.3.</span> <span class="toc-text">CMD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ES6"><span class="toc-number">2.4.</span> <span class="toc-text">ES6</span></a></li></ol></li></ol>
+        </nav>
+    </div>
+</aside>
+
+
+
+
+
+        </section>
+        <footer class="hidden lg:block fixed bottom-0 left-0 sm:w-1/12 lg:w-1/6 bg-gray-100 z-40">
+    
+    <div class="footer-social-links">
+        
+            <a href="https://github.com/antqi" target="_blank" rel="noopener">
+                <i class="iconfont icon-github"></i>
+            </a>
+        
+    </div>
+    
+    
+</footer>
+
+        <div id="mask" class="hidden mask fixed inset-0 bg-gray-900 opacity-75 z-40"></div>
+        <div id="search-view-container" class="hidden shadow-xl"></div>
+        
+<script src="/js/dom-event.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/yox@1.0.0-alpha.121/dist/standard/prod/yox.min.js"></script>
+
+
+<script src="/js/search.min.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/lightgallery.js@1.1.3/dist/js/lightgallery.min.js"></script>
+    
+<script src="/js/light-gallery.min.js"></script>
+
+
+
+
+
+    </body>
+</html>
