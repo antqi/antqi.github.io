@@ -1,21 +1,4 @@
-## 引言
-
-> 模块虽然解偶了代码，使得代码易于维护等等好处。但一个项目往往中有若干个以上的模块，模块多以及模块间的依赖导致了<u>HTTP请求响应次数过多</u>以及<u>依赖模糊</u>问题，直接导致项目<u>难以维护</u>，而引发了模块的管理问题。
-
-这时候出现**模块化规范**，则是解决模块化带来的问题。模块化规范的常用几种：
-
-- **CommonJS**
-- **AMD**
-- **CMD**
-- **ES6**
-
-
-
-## 规范简介
-
-### [CommonJS](http://wiki.commonjs.org/wiki/CommonJS)
-
-#### 历史由来[wiki](https://zh.wikipedia.org/wiki/CommonJS)
+## 历史由来[wiki](https://zh.wikipedia.org/wiki/CommonJS)
 
 > CommonJS是一个项目，创建的主要原因是当时缺乏普遍可接受形式的JavaScript脚本模块单元，模块在与运行JavaScript脚本的常规网页浏览器所提供的不同的环境下可以重复使用
 
@@ -27,17 +10,23 @@ JavaScript一一直没有模块化的概念，直到2009年Node.js的出现，�
 
 而后[Browserify](https://github.com/browserify)实现了浏览器端的CommonJS规范，自此之后，使得浏览器端的代码能以以模块化方式运行，并能使用npm上传、维护以及使用JavaScript模块。
 
-#### CommonJS约定简述[Modules/1.1.1](http://wiki.commonjs.org/wiki/Modules/1.1.1)
 
-##### 首先简述CommonJS中的模块是什么？
+
+## CommonJS约定简述[Modules/1.1.1](http://wiki.commonjs.org/wiki/Modules/1.1.1)
+
+### 首先简述CommonJS中的模块是什么？
 
 每个文件都是一个模块，有自己的作用域。
 
 每个文件里面变量、函数等等都是私有的 ，提供导出功能来选择开发哪些变量、函数等等，并可依赖其他模块。
 
-##### CommonJS规范约定模块的实现
 
-###### Module(每个文件可以看成一个Module)
+
+### CommonJS规范约定模块的实现
+
+#### Module
+
+每个文件可以看成一个Module;
 
 Module是一个对象，
 
@@ -48,7 +37,7 @@ Module是一个对象，
 
 - Module包含自由变量`exports`，`exports`作为唯一的导出方法，`exports`可以在执行时向其添加API的对象。
 
-###### Require
+#### Require
 
 用来加载需要的模块
 
@@ -65,7 +54,7 @@ var myCalc = require('./tool/calc') // 路径，一般为项目自定义模块�
 var result = myCalc.add(2,3) // 使用模块开放的方法
 ```
 
-###### exports
+#### exports
 
 也就是向外暴露模块。
 
@@ -73,7 +62,7 @@ var result = myCalc.add(2,3) // 使用模块开放的方法
 
 语法上有两种方式：
 
-- `module.exports = 任意类型`
+###### module.exports = 任意类型
 
 ``` javascript
 var foo = function(){
@@ -82,7 +71,7 @@ var foo = function(){
 module.exports = foo 
 ```
 
-- `exports.xxx = 任意类型`
+###### exports.xxx = 任意类型
 
 ``` javascript
 const name="john"
@@ -98,19 +87,12 @@ exports.nums=nums
 exports.showName=showName
 ```
 
-#### 具体实现
+
+
+## 具体实现
 
 有一点很重要，CommonJS模块是同步加载的
 
-- 服务器端，NodeJS是CommonJS规范的实现
-- 浏览器端，Browserify是CommonJS规范的实现
+- 服务器端，NodeJS是CommonJS规范的实现 - [demo](https://github.com/antqi/test/tree/master/JavaScript模块化/5-CommonJS)
+- 浏览器端，Browserify是CommonJS规范的实现- [demo](https://github.com/antqi/test/tree/master/JavaScript模块化/5-CommonJS)
 
-
-
-### AMD
-
-AMD是“Asynchronous Module Definition”，翻译过来是异步模块定义。
-
-### CMD
-
-### ES6
