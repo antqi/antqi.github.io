@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>HTTP/HTTP历史 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="HTTP是万维网的基础协议。早起是一个实验室之间交换文件的协议，进化到如今可以传输图片，高分辨率视频、3D效果的复杂的现代互联网协议。 万维网1989年，Tim Berners-Lee 博士写了一份关于建立一个通过网络传输超文本协议的系统报告。起初命名为Mesh，在1990年项目实施期间被更名为万维网（World Wide Web）。 万维网在现有的TCP&#x2F;IP协议基础上建立，由四部分组成：  用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP&#x2F;HTTP历史">
+<meta property="og:url" content="http://yoursite.com/2020/06/25/HTTP/HTTP%E5%8E%86%E5%8F%B2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="HTTP是万维网的基础协议。早起是一个实验室之间交换文件的协议，进化到如今可以传输图片，高分辨率视频、3D效果的复杂的现代互联网协议。 万维网1989年，Tim Berners-Lee 博士写了一份关于建立一个通过网络传输超文本协议的系统报告。起初命名为Mesh，在1990年项目实施期间被更名为万维网（World Wide Web）。 万维网在现有的TCP&#x2F;IP协议基础上建立，由四部分组成：  用">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-25T03:10:24.407Z">
+<meta property="article:modified_time" content="2020-06-25T03:10:24.407Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-HTTP/HTTP历史" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/25/HTTP/HTTP%E5%8E%86%E5%8F%B2/" class="article-date">
+  <time datetime="2020-06-25T03:10:24.407Z" itemprop="datePublished">2020-06-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      HTTP/HTTP历史
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>HTTP是万维网的基础协议。早起是一个实验室之间交换文件的协议，进化到如今可以传输图片，高分辨率视频、3D效果的复杂的现代互联网协议。</p>
+<h2 id="万维网"><a href="#万维网" class="headerlink" title="万维网"></a>万维网</h2><p>1989年，Tim Berners-Lee 博士写了一份关于建立一个通过网络传输超文本协议的系统报告。起初命名为Mesh，在1990年项目实施期间被更名为万维网（World Wide Web）。</p>
+<p>万维网在现有的TCP/IP协议基础上建立，由四部分组成：</p>
+<ul>
+<li>用来表示超文本文档的文本格式，超文本标记语言（HTML）</li>
+<li>用来交换超文本文档的简单协议，超文本传输协议（HTTP）</li>
+<li>显示/编辑超文本文档的客户端，即网络浏览器。</li>
+<li>服务器用于提供访问的文档，即<code>httpd</code>的前身</li>
+</ul>
+<p>HTTP在应用的早起阶段非常的简单，后来被称为HTTP/0.9，也有叫做单行（one-line）协议</p>
+<h2 id="HTTP-0-9-单行协议"><a href="#HTTP-0-9-单行协议" class="headerlink" title="HTTP/0.9-单行协议"></a>HTTP/0.9-单行协议</h2><p>请求由单行指令构成，以唯一可用的<code>Get</code>开头，其后跟着目标资源的路径</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /index.html</span><br></pre></td></tr></table></figure>
+
+<p>响应也极其简单：只包含文档本身，没有响应头，这意味着只有HTML文件可以传送</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  这是一个简单的HTML页面</span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>只有GET命令</li>
+<li>没有HEADER等描述数据的信息</li>
+<li>服务器发送完毕，就关闭TCP连接</li>
+<li>一旦出现问题，一个特殊的包含问题描述信息的HTML文件将被发回，供人们查看</li>
+</ul>
+<h2 id="HTTP-1-0-构建可扩展性"><a href="#HTTP-1-0-构建可扩展性" class="headerlink" title="HTTP/1.0-构建可扩展性"></a>HTTP/1.0-构建可扩展性</h2><ul>
+<li>协议版本信息会随着每个请求发送 <code>GET /index.html HTTP/1.0</code></li>
+<li>状态码会在响应开始时发送，使浏览器能了解请求执行成功或失败，并相应调整行为（如更新或使用本地缓存）</li>
+<li>引入了HTTP头的概念，无论是对于请求还是响应，允许传输元数据，使协议变得非常灵活，更具扩展性</li>
+<li>具备传输纯文本HTML文档以外的其他类型文档的能力（<code>Content-Type</code>）</li>
+<li>增加了很多命令</li>
+<li>增加status code 和 header</li>
+<li>多字符集支持、多部分发送、权限、缓存</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/index.html</span> HTTP/1.0</span><br><span class="line"><span class="attribute">User-Agent</span>: NCSA_Mosaic/2.0 (Windows 3.1)</span><br><span class="line"></span><br><span class="line">200 OK</span><br><span class="line"><span class="attribute">Date</span>: Tue, 15 Nov 1994 08:12:31 GMT</span><br><span class="line"><span class="attribute">Server</span>: CERN/3.0 libwww/2.17</span><br><span class="line"><span class="attribute">Content-Type</span>: text/html</span><br><span class="line">&lt;HTML&gt; </span><br><span class="line">一个包含图片的页面</span><br><span class="line">&lt;/HTML&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这些新扩展并没有马上被引入到标准中。直到1996年11月，一份新的文档被发表出来。该文档定义了HTTP/1.0，但它是狭义的，并不是官方标准。 </p>
+<h2 id="HTTP-1-1-标准化的协议"><a href="#HTTP-1-1-标准化的协议" class="headerlink" title="HTTP/1.1-标准化的协议"></a>HTTP/1.1-标准化的协议</h2><p>在1997年，<a href="https://tools.ietf.org/html/rfc2068" target="_blank" rel="noopener">HTTP/1.1</a>标准发布，就在HTTP/1.0发布的几个月后。</p>
+<p>HTTP /1.1消除了大量歧义内容并引入了更多改进：</p>
+<ul>
+<li>连接可复用，节省多次打开TCP连接加载文档资源的时间</li>
+<li>增加管线技术pipeline，第一个应答被完全发送之前就发送第二个请求，降低通信延迟(同一个连接里发送多个请求，<u>串行</u>)</li>
+<li>支持响应分块</li>
+<li>缓存控制机制</li>
+<li>内容协商机制</li>
+<li>增加host和其他一些命令（同一个IP可以部署多个web服务）</li>
+</ul>
+<h2 id="HTTP-2-0-为了更优异的表现"><a href="#HTTP-2-0-为了更优异的表现" class="headerlink" title="HTTP/2.0-为了更优异的表现"></a>HTTP/2.0-为了更优异的表现</h2><p>2015年5月正式标准化</p>
+<blockquote>
+<p>HTTP/2.0是二进制协议，不是文本协议</p>
+</blockquote>
+<ul>
+<li>所有数据以二进制传输（之前是字符串）</li>
+<li>同一个连接里发送多个请求可<u>并行</u>处理，移除HTTP/1.x中的顺序和阻塞约束</li>
+<li>头信息压缩，移除重复和传输重复数据的成本</li>
+<li>推送</li>
+</ul>
+<h2 id="HTTP-安全传输"><a href="#HTTP-安全传输" class="headerlink" title="HTTP-安全传输"></a>HTTP-安全传输</h2><p>1994年，网景公司在TCP/IP协议栈基础上创建了一个<strong>额外的加密传输层</strong>：SSL。SSL2.0及其后继者SSL 3.0和SSL 3.1<strong>允许通过加密来保证服务器和客户端之间交换消息的真实性</strong>。SSL标准化最终成为TLS。</p>
+<h2 id="HTTP-复杂应用"><a href="#HTTP-复杂应用" class="headerlink" title="HTTP-复杂应用"></a>HTTP-复杂应用</h2><p>Web 的最初设想不是一个只读媒体。 他设想一个 Web 是可以远程添加或移动文档，是一种分布式文件系统。 大约 1996 年，HTTP 被扩展到允许创作，并且创建了一个名为 WebDAV 的标准。</p>
+<p>在 2000 年，一种新的使用 HTTP 的模式被设计出来：<a href="https://developer.mozilla.org/en-US/docs/Glossary/REST" target="_blank" rel="noopener">representational state transfer</a> (或者说 <code>REST</code>)。 <u>由 API 发起的操作不再通过新的 HTTP 方法传达，而只能通过使用基本的 HTTP / 1.1 方法访问特定的 URI</u>。 这允许任何 Web 应用程序通过提供 API 以允许查看和修改其数据，而无需更新浏览器或服务器</p>
+<p>其中几个API为特定目的扩张了HTT协议，大部分是新的特定HTTP头</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events" target="_blank" rel="noopener">Server-sent events</a>，服务器可以偶尔推送消息到浏览器。</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket_API" target="_blank" rel="noopener">WebSocket</a>，一个新协议，可以通过升级现有 HTTP 协议来建立。</li>
+</ul>
+<h2 id="放松的Web安全模型"><a href="#放松的Web安全模型" class="headerlink" title="放松的Web安全模型"></a>放松的Web安全模型</h2><p>HTTP和Web安全模型–<a href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy" target="_blank" rel="noopener">同源策略</a>是互不相关的。事实上，当前的Web安全模型是在HTTP被创造出来后才被发展的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/25/HTTP/HTTP%E5%8E%86%E5%8F%B2/" data-id="ckbuudumu000365s6g32saz06" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/25/HTTP/HTTP%E6%8A%A5%E6%96%87/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          HTTP/HTTP报文
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/25/HTTP/HTTP%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">HTTP/HTTP的三次握手</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/25/LEVEL%201/%E6%89%B9%E5%88%A4%E6%80%9D%E7%BB%B4/%E7%8B%AC%E7%AB%8B%E6%80%9D%E8%80%83/%E5%B8%B8%E8%A7%81%E7%9A%84%E9%80%BB%E8%BE%91%E8%B0%AC%E8%AF%AF/%E4%B8%A4%E7%A7%8D%E8%BD%AC%E7%A7%BB%E4%BA%BA%E8%BA%AB%E8%B0%AC%E8%AF%AF/">LEVEL 1/批判思维/独立思考/常见的逻辑谬误/两种转移人身谬误</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/25/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/25/%E8%87%AA%E5%AE%9A%E4%B9%89Promise/%E5%AE%8F%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BE%AE%E4%BB%BB%E5%8A%A1/">自定义Promise/宏任务和微任务</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/25/%E8%87%AA%E5%AE%9A%E4%B9%89Promise/07-async&await/">自定义Promise/07-async&amp;await</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/25/%E8%87%AA%E5%AE%9A%E4%B9%89Promise/Event%20Loop/">自定义Promise/Event Loop</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

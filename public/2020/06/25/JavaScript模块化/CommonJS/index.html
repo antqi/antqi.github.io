@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>JavaScript模块化/CommonJS | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="历史由来wiki CommonJS是一个项目，创建的主要原因是当时缺乏普遍可接受形式的JavaScript脚本模块单元，模块在与运行JavaScript脚本的常规网页浏览器所提供的不同的环境下可以重复使用  2009年1月由Mozilla工程师Kevin Dangoor发起，起初命名“ServerJS”。在2009年8月，这个项目被改为“CommonJS”来展示其API的广泛的应用性。 2013年">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript模块化&#x2F;CommonJS">
+<meta property="og:url" content="http://yoursite.com/2020/06/25/JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96/CommonJS/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="历史由来wiki CommonJS是一个项目，创建的主要原因是当时缺乏普遍可接受形式的JavaScript脚本模块单元，模块在与运行JavaScript脚本的常规网页浏览器所提供的不同的环境下可以重复使用  2009年1月由Mozilla工程师Kevin Dangoor发起，起初命名“ServerJS”。在2009年8月，这个项目被改为“CommonJS”来展示其API的广泛的应用性。 2013年">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-25T03:10:24.410Z">
+<meta property="article:modified_time" content="2020-06-25T03:10:24.410Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-JavaScript模块化/CommonJS" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/25/JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96/CommonJS/" class="article-date">
+  <time datetime="2020-06-25T03:10:24.410Z" itemprop="datePublished">2020-06-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JavaScript模块化/CommonJS
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="历史由来wiki"><a href="#历史由来wiki" class="headerlink" title="历史由来wiki"></a>历史由来<a href="https://zh.wikipedia.org/wiki/CommonJS" target="_blank" rel="noopener">wiki</a></h2><blockquote>
+<p>CommonJS是一个项目，创建的主要原因是当时缺乏普遍可接受形式的JavaScript脚本模块单元，模块在与运行JavaScript脚本的常规网页浏览器所提供的不同的环境下可以重复使用</p>
+</blockquote>
+<p>2009年1月由<a href="https://zh.wikipedia.org/wiki/Mozilla" target="_blank" rel="noopener">Mozilla</a>工程师Kevin Dangoor发起，起初命名“ServerJS”。在2009年8月，这个项目被改为“CommonJS”来展示其<a href="https://zh.wikipedia.org/wiki/API" target="_blank" rel="noopener">API</a>的广泛的应用性。</p>
+<p>2013年5月，<a href="https://zh.wikipedia.org/wiki/Node.js" target="_blank" rel="noopener">Node.js</a>包管理器<a href="https://zh.wikipedia.org/wiki/Npm" target="_blank" rel="noopener">npm</a>的作者Isaac Z. Schlueter，宣布Node.js已经废弃了CommonJS。后续，NodeJS在计划使用 <a href="https://nodejs.org/api/esm.html#esm_ecmascript_modules" target="_blank" rel="noopener">ES6模块系统</a></p>
+<p>JavaScript一一直没有模块化的概念，直到2009年Node.js的出现，模块化成了必要实现。因此Node.js首先在服务端实现了CommonJS规范的模块系统。</p>
+<p>而后<a href="https://github.com/browserify" target="_blank" rel="noopener">Browserify</a>实现了浏览器端的CommonJS规范，自此之后，使得浏览器端的代码能以以模块化方式运行，并能使用npm上传、维护以及使用JavaScript模块。</p>
+<h2 id="CommonJS约定简述Modules-1-1-1"><a href="#CommonJS约定简述Modules-1-1-1" class="headerlink" title="CommonJS约定简述Modules/1.1.1"></a>CommonJS约定简述<a href="http://wiki.commonjs.org/wiki/Modules/1.1.1" target="_blank" rel="noopener">Modules/1.1.1</a></h2><h3 id="首先简述CommonJS中的模块是什么？"><a href="#首先简述CommonJS中的模块是什么？" class="headerlink" title="首先简述CommonJS中的模块是什么？"></a>首先简述CommonJS中的模块是什么？</h3><p>每个文件都是一个模块，有自己的作用域。</p>
+<p>每个文件里面变量、函数等等都是私有的 ，提供导出功能来选择开发哪些变量、函数等等，并可依赖其他模块。</p>
+<h3 id="CommonJS规范约定模块的实现"><a href="#CommonJS规范约定模块的实现" class="headerlink" title="CommonJS规范约定模块的实现"></a>CommonJS规范约定模块的实现</h3><h4 id="Module"><a href="#Module" class="headerlink" title="Module"></a>Module</h4><p>每个文件可以看成一个Module;</p>
+<p>Module是一个对象，</p>
+<ul>
+<li><p>包含属性id：唯一的标识符；</p>
+</li>
+<li><p>可能具备包含属性uri，都是用来标识module的唯一性。</p>
+</li>
+<li><p>Module包含自由变量<code>require</code></p>
+</li>
+<li><p>Module包含自由变量<code>exports</code>，<code>exports</code>作为唯一的导出方法，<code>exports</code>可以在执行时向其添加API的对象。</p>
+</li>
+</ul>
+<h4 id="Require"><a href="#Require" class="headerlink" title="Require"></a>Require</h4><p>用来加载需要的模块</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="built_in">module</span>.id/uri)</span><br></pre></td></tr></table></figure>
+
+<p>Require是一个函数，接受模块标识符/路径（<code>module.id</code>/<code>uri</code>），返回外部模块导出API。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>) <span class="comment">// 标识符，一般是引用第三方模块</span></span><br><span class="line"><span class="keyword">var</span> myCalc = <span class="built_in">require</span>(<span class="string">'./tool/calc'</span>) <span class="comment">// 路径，一般为项目自定义模块时</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> result = myCalc.add(<span class="number">2</span>,<span class="number">3</span>) <span class="comment">// 使用模块开放的方法</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="exports"><a href="#exports" class="headerlink" title="exports"></a>exports</h4><p>也就是向外暴露模块。</p>
+<p>作为唯一的导出方法,可以在执行时向其添加API的对象。</p>
+<p>语法上有两种方式：</p>
+<h6 id="module-exports-任意类型"><a href="#module-exports-任意类型" class="headerlink" title="module.exports = 任意类型"></a>module.exports = 任意类型</h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="comment">// 方法体</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = foo</span><br></pre></td></tr></table></figure>
+
+<h6 id="exports-xxx-任意类型"><a href="#exports-xxx-任意类型" class="headerlink" title="exports.xxx = 任意类型"></a>exports.xxx = 任意类型</h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> name=<span class="string">"john"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> nums=[<span class="number">1</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">5</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">showName</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">exports.name=name</span><br><span class="line">exports.nums=nums</span><br><span class="line">exports.showName=showName</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>有一点很重要，CommonJS模块是同步加载的</p>
+<ul>
+<li>服务器端，NodeJS是CommonJS规范的实现 - <a href="https://github.com/antqi/test/tree/master/JavaScript模块化/5-CommonJS" target="_blank" rel="noopener">demo</a></li>
+<li>浏览器端，Browserify是CommonJS规范的实现- <a href="https://github.com/antqi/test/tree/master/JavaScript模块化/5-CommonJS" target="_blank" rel="noopener">demo</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/25/JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96/CommonJS/" data-id="ckbuudun8000b65s613yu18bm" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/25/JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96/%E6%A8%A1%E5%9D%97%E5%8C%96%E8%BF%9B%E7%A8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          JavaScript模块化/模块化进程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/25/JavaScript%E6%A8%A1%E5%9D%97%E5%8C%96/%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9A%84%E8%A7%84%E8%8C%83/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JavaScript模块化/模块化的规范</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/25/LEVEL%201/%E6%89%B9%E5%88%A4%E6%80%9D%E7%BB%B4/%E7%8B%AC%E7%AB%8B%E6%80%9D%E8%80%83/%E5%B8%B8%E8%A7%81%E7%9A%84%E9%80%BB%E8%BE%91%E8%B0%AC%E8%AF%AF/%E4%B8%A4%E7%A7%8D%E8%BD%AC%E7%A7%BB%E4%BA%BA%E8%BA%AB%E8%B0%AC%E8%AF%AF/">LEVEL 1/批判思维/独立思考/常见的逻辑谬误/两种转移人身谬误</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/25/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/25/%E8%87%AA%E5%AE%9A%E4%B9%89Promise/%E5%AE%8F%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BE%AE%E4%BB%BB%E5%8A%A1/">自定义Promise/宏任务和微任务</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/25/%E8%87%AA%E5%AE%9A%E4%B9%89Promise/07-async&await/">自定义Promise/07-async&amp;await</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/25/%E8%87%AA%E5%AE%9A%E4%B9%89Promise/Event%20Loop/">自定义Promise/Event Loop</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
