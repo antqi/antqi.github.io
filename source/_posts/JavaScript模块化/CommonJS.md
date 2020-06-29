@@ -88,4 +88,10 @@ exports.showName = showName
 有一点很重要，CommonJS 模块是同步加载的
 
 - 服务器端，NodeJS 是 CommonJS 规范的实现 - [demo](https://github.com/antqi/test/tree/master/JavaScript模块化/5-CommonJS)
+
+  模块加载在程序初始化的时候，会稍微慢点
+
 - 浏览器端，Browserify 是 CommonJS 规范的实现- [demo](https://github.com/antqi/test/tree/master/JavaScript模块化/5-CommonJS)
+
+  浏览器需要模块的时候，向服务器发送请求，服务器先合并文件中所有的模块并编译之后，再发送给浏览器。这个过程非常耗时。加上同步加载，使得模块加载的时候，无法运行后面的语句。这会导致内容从请求到展示到用户，需要的时间更长。体验非常差。这时候浏览器端的模块加载使用异步方式更优。
+
